@@ -10,5 +10,9 @@ public class Title {
     @SerializedName("Name")
     public String name;
 
-
+    public Title(String url, String imageUrl, String name) {
+        this.url = url;
+        this.imageUrl = imageUrl;
+        this.name = name;
+    }
 }

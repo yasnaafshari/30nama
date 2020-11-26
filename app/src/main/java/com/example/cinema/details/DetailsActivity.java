@@ -25,6 +25,7 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://cinama.herokuapp.com/")
                 .addConverterFactory(GsonConverterFactory.create())

@@ -8,9 +8,14 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/titlesPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <com.google.android.material.tabs.TabLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/mainRecycler"/>
+        android:id="@+id/tabLayout"/>
+    </androidx.viewpager.widget.ViewPager>
 
 </LinearLayout>

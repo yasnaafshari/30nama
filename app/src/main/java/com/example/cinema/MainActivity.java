@@ -1,14 +1,18 @@
 package com.example.cinema;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TableLayout;
 
 import com.example.cinema.titleslist.TitlesListViewHolder;
+import com.google.android.material.tabs.TabLayout;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,6 +27,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ViewPager titlesPager = findViewById(R.id.titlesPager);
+
+        TabLayout tabLayout = findViewById(R.id.tabLayout);
+        tabLayout.setupWithViewPager(titlesPager);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://cinama.herokuapp.com/")
@@ -32,11 +40,9 @@ public class MainActivity extends AppCompatActivity {
         service.getHomePage().enqueue(new Callback<HomePageModel>() {
             @Override
             public void onResponse(Call<HomePageModel> call, Response<HomePageModel> response) {
-                response.body();
-                HomePageModel homePageModel =response.body();
-                RecyclerView recyclerView = findViewById(R.id.mainRecycler);
-                recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-                recyclerView.setAdapter(new MainListAdapter(homePageModel));
+                HomePageModel homePageModel = response.body();
+                titlesPager.setAdapter(new TitlesPagerAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
+                        homePageModel));
             }
 
             @Override

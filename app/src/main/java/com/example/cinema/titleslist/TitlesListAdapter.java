@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cinema.MainListViewHolder;
 import com.example.cinema.R;
 import com.example.cinema.Title;
 import com.squareup.picasso.Picasso;
@@ -21,6 +20,7 @@ public class TitlesListAdapter extends RecyclerView.Adapter<TitlesListViewHolder
     public TitlesListAdapter(List<Title> titles) {
         this.titles = titles;
     }
+
 
     @NonNull
     @Override
