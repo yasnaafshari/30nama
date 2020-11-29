@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cinema.R;
-import com.example.cinema.Title;
+import com.example.cinema.homePage.Title;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

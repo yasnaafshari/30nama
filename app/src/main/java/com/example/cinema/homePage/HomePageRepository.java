@@ -1,6 +1,4 @@
-package com.example.cinema;
-
-import androidx.fragment.app.FragmentStatePagerAdapter;
+package com.example.cinema.homePage;
 
 import com.example.cinema.core.Network;
 

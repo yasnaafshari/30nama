@@ -1,4 +1,4 @@
-package com.example.cinema;
+package com.example.cinema.homePage;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

@@ -1,4 +1,4 @@
-package com.example.cinema;
+package com.example.cinema.homePage;
 
 import com.google.gson.annotations.SerializedName;
 

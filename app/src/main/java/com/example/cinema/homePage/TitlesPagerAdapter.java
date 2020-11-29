@@ -1,4 +1,4 @@
-package com.example.cinema;
+package com.example.cinema.homePage;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

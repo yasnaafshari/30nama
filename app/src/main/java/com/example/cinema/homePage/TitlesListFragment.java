@@ -1,4 +1,4 @@
-package com.example.cinema;
+package com.example.cinema.homePage;
 
 import android.os.Bundle;
 
@@ -12,15 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.cinema.R;
 import com.example.cinema.titleslist.TitlesListAdapter;
 
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class TitlesListFragment extends Fragment {
 
