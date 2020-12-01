@@ -15,4 +15,5 @@ public class LoginInformation {
         this.captcha = captcha;
         this.session = session;
     }
+
 }

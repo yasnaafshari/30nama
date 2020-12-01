@@ -25,73 +25,99 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
     final CaptchaModel[] captchaModel = {null};
-    LoginService service = Network.retrofit.create(LoginService.class);
+    LoginRepository yLoginRepository = new LoginRepository();
+    SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
-        String token = preferences.getString("token", null);
-        if(token != null) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
+
+        if(isLoggedIn()) {
+            startMainActivity();
         }
 
+        setupNewCaptcha();
+
+        setupLogin();
+
+    }
+
+    private void setupLogin() {
+        Button loginButton = findViewById(R.id.signInButton);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoginInformation loginInformation = getLoginInformation();
+                login(loginInformation);
+
+            }
+        });
+    }
+
+    private LoginInformation getLoginInformation() {
+        EditText editTextEmail = findViewById(R.id.editTextEmail);
+        EditText editTextPass = findViewById(R.id.editTextPass);
+        EditText editTextCaptcha = findViewById(R.id.captcha);
+        String email = editTextEmail.getText().toString();
+        String password = editTextPass.getText().toString();
+        String captcha = editTextCaptcha.getText().toString();
+        return new LoginInformation(email,password,captcha, captchaModel[0].session);
+    }
+
+    private void login(LoginInformation loginInformation) {
+        yLoginRepository.login(loginInformation, new LoginRepository.LoginCallback() {
+            @Override
+            public void onSuccess(String token) {
+                preferences.edit().putString("token", token).commit();
+            }
+
+            @Override
+            public void onFailure(String message) {
+
+            }
+        });
+    }
+
+    private void setupNewCaptcha() {
         Button retryButton = findViewById(R.id.retry);
         retryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getCaptch();
+               getCaptcha();
             }
         });
-        Button button = findViewById(R.id.signInButton);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EditText editTextEmail = findViewById(R.id.editTextEmail);
-                EditText editTextPass = findViewById(R.id.editTextPass);
-                EditText editTextCaptcha = findViewById(R.id.captcha);
-                String email = editTextEmail.getText().toString();
-                String password = editTextPass.getText().toString();
-                String captcha = editTextCaptcha.getText().toString();
-                LoginInformation loginInformation = new LoginInformation(email,password,captcha, captchaModel[0].session);
-                service.login(loginInformation).enqueue(new Callback<LoginResponseModel>() {
-                    @Override
-                    public void onResponse(Call<LoginResponseModel> call, Response<LoginResponseModel> response) {
-                       String token = response.body().data;
-                        preferences.edit().putString("token",token).commit();
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<LoginResponseModel> call, Throwable t) {
-
-                    }
-                });
-
-            }
-        });
-        getCaptch();
-
     }
-    void getCaptch() {
-        service.getCaptcha().enqueue(new Callback<CaptchaModel>() {
+
+    private void startMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private boolean isLoggedIn() {
+        preferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+        String token = preferences.getString("token", null);
+        return token != null;
+    }
+
+    private void getCaptcha() {
+        yLoginRepository.getCaptch(new LoginRepository.CaptchaCallback() {
             @Override
-            public void onResponse(Call<CaptchaModel> call, Response<CaptchaModel> response) {
-                captchaModel[0] = response.body();
-                byte[] decodedString = Base64.decode(captchaModel[0].captcha, Base64.DEFAULT);
+            public void onSuccess(CaptchaModel captchaModel) {
+                LoginActivity.this.captchaModel[0] = captchaModel;
+                byte[] decodedString = Base64.decode(captchaModel.captcha, Base64.DEFAULT);
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                 ImageView image = findViewById(R.id.imageView);
                 image.setImageBitmap(decodedByte);
             }
 
             @Override
-            public void onFailure(Call<CaptchaModel> call, Throwable t) {
+            public void onFailure(String message) {
 
             }
         });
     }
+
 }
