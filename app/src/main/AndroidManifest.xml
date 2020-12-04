@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".details.DetailsActivity" />
-        <activity android:name=".homePage.MainActivity">
+        <activity android:name=".MainActivity">
 
         </activity>
     </application>

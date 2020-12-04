@@ -9,19 +9,13 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.example.cinema.R;
-import com.example.cinema.core.Network;
-import com.example.cinema.homePage.MainActivity;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import com.example.cinema.MainActivity;
 
 public class LoginActivity extends AppCompatActivity {
     final CaptchaModel[] captchaModel = {null};
