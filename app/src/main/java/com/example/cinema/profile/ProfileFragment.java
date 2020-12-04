@@ -1,6 +1,8 @@
 package com.example.cinema.profile;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.example.cinema.R;
+import com.example.cinema.login.LoginActivity;
 
 public class ProfileFragment extends Fragment {
     ProfileRepository yProfileRepository = new ProfileRepository();
@@ -21,7 +24,10 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        yProfileRepository.getProfile("token", new ProfileRepository.ProfileCallback() {
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String token = preferences.getString("token", null);
+        yProfileRepository.getProfile(token, new ProfileRepository.ProfileCallback() {
             @Override
             public void onSuccess(ProfileModel profileModel) {
                 TextView username = getView().findViewById(R.id.username);
