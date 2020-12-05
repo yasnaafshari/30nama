@@ -13,24 +13,19 @@ import retrofit2.Response;
 
 public class NotificationRepository {
     public void getNotifications(String token,NotificationCallback callback) {
-        List<NotificationModel> notificationModelList = new ArrayList<>();
-        notificationModelList.add(new NotificationModel("new episode", "his dark material"));
-        notificationModelList.add(new NotificationModel("new episode", "dexter"));
+        Network.retrofit.create(NotificationService.class).getNotification(token).enqueue(new Callback<List<NotificationModel>>() {
+            @Override
+            public void onResponse(Call<List<NotificationModel>> call, Response<List<NotificationModel>> response) {
+                List<NotificationModel> notificationModelList = response.body();
+                callback.onSuccess(notificationModelList);
 
-        callback.onSuccess(notificationModelList);
-//        Network.retrofit.create(NotificationService.class).getNotification(token).enqueue(new Callback<List<NotificationModel>>() {
-//            @Override
-//            public void onResponse(Call<List<NotificationModel>> call, Response<List<NotificationModel>> response) {
-//                List<NotificationModel> notificationModelList = response.body();
-//                callback.onSuccess(notificationModelList);
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<NotificationModel>> call, Throwable t) {
-//                callback.onFailure();
-//            }
-//        });
+            }
+
+            @Override
+            public void onFailure(Call<List<NotificationModel>> call, Throwable t) {
+                callback.onFailure();
+            }
+        });
 
     }
 
