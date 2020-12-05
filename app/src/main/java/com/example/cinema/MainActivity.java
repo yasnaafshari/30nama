@@ -12,6 +12,7 @@ import android.view.MenuItem;
 
 import com.example.cinema.R;
 import com.example.cinema.homePage.HomeFragment;
+import com.example.cinema.notificationList.NotificationFragment;
 import com.example.cinema.profile.ProfileFragment;
 import com.example.cinema.search.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -29,23 +30,35 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-                if (item.getItemId() == R.id.homePage) {
-                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                    ft.replace(R.id.fragmentView, homeFragment);
-                    ft.commit();
+                switch (item.getItemId()) {
+                    case R.id.homePage: {
+                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        ft.replace(R.id.fragmentView, homeFragment);
+                        ft.commit();
 
 
-                } else if (item.getItemId() == R.id.profile) {
+                        break;
+                    }
+                    case R.id.profile: {
 
-                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
-                    ft.replace(R.id.fragmentView, new ProfileFragment());
-                    ft.commit();
-                }
-                else if (item.getItemId() == R.id.search){
-                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                    ft.replace(R.id.fragmentView, new SearchFragment());
-                    ft.commit();
+                        ft.replace(R.id.fragmentView, new ProfileFragment());
+                        ft.commit();
+                        break;
+                    }
+                    case R.id.search: {
+                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        ft.replace(R.id.fragmentView, new SearchFragment());
+                        ft.commit();
+                        break;
+                    }
+                    case R.id.notification:{
+                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        ft.replace(R.id.fragmentView, new NotificationFragment());
+                        ft.commit();
+                        break;
+                    }
                 }
 
                 return true;
