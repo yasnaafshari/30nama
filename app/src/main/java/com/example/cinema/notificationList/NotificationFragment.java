@@ -1,6 +1,8 @@
 package com.example.cinema.notificationList;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +30,9 @@ public class NotificationFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         NotificationRepository repository = new NotificationRepository();
-        repository.getNotifications("token", new NotificationRepository.NotificationCallback() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String token = preferences.getString("token", null);
+        repository.getNotifications(token, new NotificationRepository.NotificationCallback() {
             @Override
             public void onSuccess(List<NotificationModel> notificationModels) {
                 NotificationAdapter adapter = new NotificationAdapter(notificationModels);

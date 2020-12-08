@@ -1,10 +1,8 @@
 package com.example.cinema.notificationList;
 
-import android.util.Log;
 
 import com.example.cinema.core.Network;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
