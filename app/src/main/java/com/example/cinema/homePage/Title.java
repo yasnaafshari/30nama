@@ -9,10 +9,13 @@ public class Title {
     public String imageUrl;
     @SerializedName("Name")
     public String name;
+    public int id;
+    public String nonce;
 
-    public Title(String url, String imageUrl, String name) {
+    public Title(String url, String imageUrl, String name, int id) {
         this.url = url;
         this.imageUrl = imageUrl;
         this.name = name;
+        this.id = id;
     }
 }

@@ -37,6 +37,8 @@ public class TitlesListAdapter extends RecyclerView.Adapter<TitlesListViewHolder
         holder.textView.setText(titles.get(position).name);
         Picasso.get().load(titles.get(position).imageUrl).into(holder.imageView);
         holder.url = titles.get(position).url;
+        holder.id = titles.get(position).id;
+        holder.nonce = titles.get(position).nonce;
 
     }
 

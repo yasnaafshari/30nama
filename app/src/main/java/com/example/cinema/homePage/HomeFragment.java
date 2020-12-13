@@ -1,6 +1,8 @@
 package com.example.cinema.homePage;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +20,10 @@ public class HomeFragment extends Fragment {
 
     private ViewPager yTitlesPager;
     private HomePageModel yHomePageModel;
+    HomePageRepository homePageRepository;
 
     public HomeFragment() {
-        HomePageRepository homePageRepository = new HomePageRepository(new HomePageRepository.HomePageCallBack() {
+        homePageRepository = new HomePageRepository(new HomePageRepository.HomePageCallBack() {
             @Override
             public void onSuccess(HomePageModel homePageModel) {
                 yHomePageModel = homePageModel;
@@ -34,7 +37,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        homePageRepository.getHomePage();
     }
 
     @Override
@@ -45,14 +47,18 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String token = preferences.getString("token", null);
 
         yTitlesPager = getView().findViewById(R.id.titlesPager);
+
         TabLayout tabLayout = getView().findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(yTitlesPager);
         if (yHomePageModel != null) {
             yTitlesPager.setAdapter(new TitlesPagerAdapter(getFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
                     yHomePageModel));
         }
+        homePageRepository.getHomePage(token);
 
 
     }

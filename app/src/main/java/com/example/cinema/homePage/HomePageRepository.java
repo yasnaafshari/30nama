@@ -1,5 +1,8 @@
 package com.example.cinema.homePage;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 import com.example.cinema.core.Network;
 
 import retrofit2.Call;
@@ -13,9 +16,9 @@ public class HomePageRepository {
         yHomePageCallBack = homePageCallBack;
     }
 
-    public void getHomePage() {
+    public void getHomePage(String token) {
         HomePageService service = Network.retrofit.create(HomePageService.class);
-        service.getHomePage().enqueue(new Callback<HomePageModel>() {
+        service.getHomePage(token).enqueue(new Callback<HomePageModel>() {
             @Override
             public void onResponse(Call<HomePageModel> call, Response<HomePageModel> response) {
                 HomePageModel homePageModel = response.body();

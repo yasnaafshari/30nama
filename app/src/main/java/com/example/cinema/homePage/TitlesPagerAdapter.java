@@ -23,7 +23,7 @@ public class TitlesPagerAdapter extends FragmentStatePagerAdapter {
         switch (position) {
             case 0:
             List<Title> suggestion = new ArrayList<>();
-            suggestion.add(new Title(yHomePageModel.suggestionTitle.url,yHomePageModel.suggestionTitle.imageUrl,yHomePageModel.suggestionTitle.title));
+            suggestion.add(new Title(yHomePageModel.suggestionTitle.url,yHomePageModel.suggestionTitle.imageUrl,yHomePageModel.suggestionTitle.title,0));
             return new TitlesListFragment(suggestion);
             case 3:
                 return new TitlesListFragment(yHomePageModel.featured);

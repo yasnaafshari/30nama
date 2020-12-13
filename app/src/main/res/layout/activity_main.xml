@@ -18,6 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:menu="@menu/menu_bottom"
+        android:background="@color/navigationBar_background"
         android:id="@+id/bottomNavigationBar"/>
 
 </LinearLayout>
