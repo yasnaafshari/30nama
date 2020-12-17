@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -21,15 +23,19 @@ import java.util.List;
 
 public class DetailsActivity extends AppCompatActivity {
     DetailPageRepository yDetailPageRepository = new DetailPageRepository();
-
+    Spinner qualitySpinner;
+    RecyclerView linksRecycler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_details);
+        qualitySpinner = findViewById(R.id.qualitySpinner);
+        linksRecycler = findViewById(R.id.linksRecycler);
         int titleType = getIntent().getIntExtra("type", 0);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String token = preferences.getString("token", null);
         String url = getIntent().getStringExtra("url");
-        setContentView(R.layout.activity_details);
+
         if (titleType == TitlesListFragment.TITLE_TYPE_MOVIE) {
 
             yDetailPageRepository.getDetailedPage(getIntent().getStringExtra("url"), new DetailPageRepository.DetailsPageCallBack() {
@@ -63,28 +69,46 @@ public class DetailsActivity extends AppCompatActivity {
                     Picasso.get().load(tvShowsModel.details.imageUrl).into(imageView);
                     story.setText(tvShowsModel.details.story);
                     title.setText(tvShowsModel.details.title);
+
                     Spinner seasonSpinner = findViewById(R.id.seasonSpinner);
                     List<String> seasonNames = new ArrayList<>();
-                    List<String> seasonDescriptions = new ArrayList<>();
                     for (TvShowsModel.SeasonPack seasonPack : tvShowsModel.mSeasonPack) {
                         seasonNames.add(seasonPack.name);
                     }
-                    for (TvShowsModel.Season season : tvShowsModel.mSeasonPack.get(0).seasons) {
-                        seasonDescriptions.add(season.descriptions.get(3));
-                    }
-                    Spinner qualitySpinner = findViewById(R.id.qualitySpinner);
-
-                    ArrayAdapter<String> qualityAdapter = new ArrayAdapter<>(DetailsActivity.this, android.R.layout.simple_spinner_item, seasonDescriptions);
-                    qualityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    qualitySpinner.setAdapter(qualityAdapter);
-
                     ArrayAdapter<String> adapter = new ArrayAdapter(DetailsActivity.this, android.R.layout.simple_spinner_item, seasonNames);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     seasonSpinner.setAdapter(adapter);
-                    RecyclerView linksRecycler = findViewById(R.id.linksRecycler);
-                    linksRecycler.setAdapter(new LinksAdapter(tvShowsModel.mSeasonPack.get(0).seasons.get(0).downloadLinks));
-                    linksRecycler.setLayoutManager(new LinearLayoutManager(DetailsActivity.this,RecyclerView.VERTICAL,false));
 
+                    setUpQualitySpinner(tvShowsModel, 0);
+                    setUpDownloadLinks(tvShowsModel,0,0);
+
+
+
+
+                    seasonSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            setUpQualitySpinner(tvShowsModel, position);
+                            setUpDownloadLinks(tvShowsModel,position,0);
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+
+                    qualitySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            setUpDownloadLinks(tvShowsModel,seasonSpinner.getSelectedItemPosition(), position);
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
                 }
 
 
@@ -94,5 +118,20 @@ public class DetailsActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private void setUpDownloadLinks(TvShowsModel tvShowsModel,int position, int qualityPosition) {
+        linksRecycler.setAdapter(new LinksAdapter(tvShowsModel.mSeasonPack.get(position).seasons.get(qualityPosition).downloadLinks));
+        linksRecycler.setLayoutManager(new LinearLayoutManager(DetailsActivity.this, RecyclerView.VERTICAL, false));
+    }
+
+    private void setUpQualitySpinner(TvShowsModel tvShowsModel, int position) {
+        List<String> seasonDescriptions = new ArrayList<>();
+        for (TvShowsModel.Season season : tvShowsModel.mSeasonPack.get(position).seasons) {
+            seasonDescriptions.add(season.descriptions.get(3));
+        }
+        ArrayAdapter<String> qualityAdapter = new ArrayAdapter<>(DetailsActivity.this, android.R.layout.simple_spinner_item, seasonDescriptions);
+        qualityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        qualitySpinner.setAdapter(qualityAdapter);
     }
 }
