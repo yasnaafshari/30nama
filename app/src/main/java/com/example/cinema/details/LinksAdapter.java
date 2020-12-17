@@ -33,6 +33,7 @@ public class LinksAdapter extends RecyclerView.Adapter<LinksViewHolder> {
         TvShowsModel.Episode episode = episodes.get(position);
         holder.episodeLink.setText(episode.downloadLink);
         holder.episodeName.setText(episode.name);
+        holder.downloadUrl = episode.downloadLink;
     }
 
     @Override
