@@ -19,10 +19,16 @@ import java.util.List;
 
 public class TitlesListFragment extends Fragment {
 
-//    int position;
+    //    int position;
     List<Title> titles;
-    public TitlesListFragment(List<Title> titles){
+    int titleType;
+    public final static int TITLE_TYPE_MOVIE = 0;
+    public final static int TITLE_TYPE_TV_SHOW = 1;
+
+    public TitlesListFragment(List<Title> titles, int titleType) {
         this.titles = titles;
+        this.titleType = titleType;
+
     }
 
 //    public TitlesListFragment(int position) {
@@ -34,7 +40,7 @@ public class TitlesListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         RecyclerView recyclerView = getView().findViewById(R.id.titlesRecycler);
-        recyclerView.setAdapter(new TitlesListAdapter(titles));
+        recyclerView.setAdapter(new TitlesListAdapter(titles, titleType));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 

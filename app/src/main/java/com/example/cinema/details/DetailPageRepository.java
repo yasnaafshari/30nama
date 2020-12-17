@@ -15,21 +15,42 @@ public class DetailPageRepository {
 
     public void getDetailedPage(String url, DetailsPageCallBack detailsPageCallBack){
         TitlesDetailsService service = Network.retrofit.create(TitlesDetailsService.class);
-        service.getTitlesDetails(url).enqueue(new Callback<TitlesDetailsModel>(){
+        service.getTitlesDetails(url).enqueue(new Callback<TvShowsModel.TitlesDetailsModel>(){
             @Override
-            public void onResponse(Call<TitlesDetailsModel> call, Response<TitlesDetailsModel> response) {
-                TitlesDetailsModel titlesDetailsModel = response.body();
+            public void onResponse(Call<TvShowsModel.TitlesDetailsModel> call, Response<TvShowsModel.TitlesDetailsModel> response) {
+                TvShowsModel.TitlesDetailsModel titlesDetailsModel = response.body();
                 detailsPageCallBack.onSuccess(titlesDetailsModel);
             }
 
             @Override
-            public void onFailure(Call<TitlesDetailsModel> call, Throwable t) {
+            public void onFailure(Call<TvShowsModel.TitlesDetailsModel> call, Throwable t) {
 
             }
         });
     }
     public interface DetailsPageCallBack{
-        void onSuccess(TitlesDetailsModel titlesDetailsModel);
+        void onSuccess(TvShowsModel.TitlesDetailsModel titlesDetailsModel);
+        void onFailure(String onFailureNote);
+    }
+    public void getTvShows(String url,String token, TvShowsCallBack tvShowsCallBack ){
+        TitlesDetailsService service = Network.retrofit.create(TitlesDetailsService.class);
+        service.getTvShows(url, token).enqueue(new Callback<TvShowsModel>() {
+            @Override
+            public void onResponse(Call<TvShowsModel> call, Response<TvShowsModel> response) {
+                TvShowsModel tvShowsModel = response.body();
+                tvShowsCallBack.onSuccess(tvShowsModel);
+            }
+
+            @Override
+            public void onFailure(Call<TvShowsModel> call, Throwable t) {
+
+            }
+        });
+
+
+        }
+    public interface TvShowsCallBack{
+        void onSuccess(TvShowsModel tvShowsModel);
         void onFailure(String onFailureNote);
     }
 }

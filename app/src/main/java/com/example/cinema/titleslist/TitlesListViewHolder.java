@@ -31,9 +31,11 @@ public class TitlesListViewHolder extends RecyclerView.ViewHolder {
     Button watchListButton;
     int id;
     String nonce;
+    int titleType;
 
-    public TitlesListViewHolder(@NonNull View itemView) {
+    public TitlesListViewHolder(@NonNull View itemView, int titleType) {
         super(itemView);
+        this.titleType = titleType;
         textView = itemView.findViewById(R.id.itemText);
         imageView = itemView.findViewById(R.id.itemImage);
         likeButton = itemView.findViewById(R.id.likeButton);
@@ -99,6 +101,7 @@ public class TitlesListViewHolder extends RecyclerView.ViewHolder {
             public void onClick(View v) {
                 Intent i = new Intent(imageView.getContext(), DetailsActivity.class);
                 i.putExtra("url", url);
+                i.putExtra("type", TitlesListViewHolder.this.titleType);
                 imageView.getContext().startActivity(i);
             }
         });

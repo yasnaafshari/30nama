@@ -27,7 +27,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onSuccess(HomePageModel homePageModel) {
                 yHomePageModel = homePageModel;
-                yTitlesPager.setAdapter(new TitlesPagerAdapter(getFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
+                yTitlesPager.setAdapter(new TitlesPagerAdapter(getParentFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
                         homePageModel));
             }
 
@@ -55,7 +55,7 @@ public class HomeFragment extends Fragment {
         TabLayout tabLayout = getView().findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(yTitlesPager);
         if (yHomePageModel != null) {
-            yTitlesPager.setAdapter(new TitlesPagerAdapter(getFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
+            yTitlesPager.setAdapter(new TitlesPagerAdapter(getParentFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
                     yHomePageModel));
         }
         homePageRepository.getHomePage(token);

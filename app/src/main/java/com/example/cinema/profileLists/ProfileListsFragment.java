@@ -59,7 +59,7 @@ public class ProfileListsFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Title>> call, Response<List<Title>> response) {
                 List<Title> list = response.body();
-                listRecycler.setAdapter(new TitlesListAdapter(list));
+                listRecycler.setAdapter(new TitlesListAdapter(list, 0));
 
             }
 

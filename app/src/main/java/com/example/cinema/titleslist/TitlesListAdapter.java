@@ -16,9 +16,11 @@ import java.util.List;
 
 public class TitlesListAdapter extends RecyclerView.Adapter<TitlesListViewHolder> {
     List<Title> titles;
+    int titleType;
 
-    public TitlesListAdapter(List<Title> titles) {
+    public TitlesListAdapter(List<Title> titles, int titleType) {
         this.titles = titles;
+        this.titleType = titleType;
     }
 
 
@@ -28,7 +30,7 @@ public class TitlesListAdapter extends RecyclerView.Adapter<TitlesListViewHolder
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View contactView = inflater.inflate(R.layout.item_title, parent, false);
-        return new TitlesListViewHolder(contactView);
+        return new TitlesListViewHolder(contactView, titleType);
 
     }
 

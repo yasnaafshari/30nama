@@ -3,7 +3,6 @@ package com.example.cinema.search;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +46,7 @@ public class SearchFragment extends Fragment {
                   public void onSuccess(List<Title> titles) {
                       RecyclerView searchResult = getView().findViewById(R.id.searchResult);
                       searchResult.setLayoutManager(new LinearLayoutManager(getContext()));
-                      searchResult.setAdapter(new TitlesListAdapter(titles));
+                      searchResult.setAdapter(new TitlesListAdapter(titles, 0));
 
                   }
 

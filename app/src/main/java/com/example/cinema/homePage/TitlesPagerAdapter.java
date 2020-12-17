@@ -12,6 +12,7 @@ import java.util.List;
 public class TitlesPagerAdapter extends FragmentStatePagerAdapter {
     HomePageModel yHomePageModel;
 
+
     public TitlesPagerAdapter(@NonNull FragmentManager fm, int behavior, HomePageModel homePageModel) {
         super(fm, behavior);
         yHomePageModel = homePageModel;
@@ -22,17 +23,17 @@ public class TitlesPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-            List<Title> suggestion = new ArrayList<>();
-            suggestion.add(new Title(yHomePageModel.suggestionTitle.url,yHomePageModel.suggestionTitle.imageUrl,yHomePageModel.suggestionTitle.title,0));
-            return new TitlesListFragment(suggestion);
+                List<Title> suggestion = new ArrayList<>();
+                suggestion.add(new Title(yHomePageModel.suggestionTitle.url, yHomePageModel.suggestionTitle.imageUrl, yHomePageModel.suggestionTitle.title, 0));
+                return new TitlesListFragment(suggestion, TitlesListFragment.TITLE_TYPE_MOVIE);
             case 3:
-                return new TitlesListFragment(yHomePageModel.featured);
+                return new TitlesListFragment(yHomePageModel.featured, TitlesListFragment.TITLE_TYPE_MOVIE);
             case 1:
-                return new TitlesListFragment(yHomePageModel.movies);
+                return new TitlesListFragment(yHomePageModel.movies, TitlesListFragment.TITLE_TYPE_MOVIE);
             case 2:
-                return new TitlesListFragment(yHomePageModel.tvShows);
+                return new TitlesListFragment(yHomePageModel.tvShows, TitlesListFragment.TITLE_TYPE_TV_SHOW);
             default:
-                return new TitlesListFragment(yHomePageModel.tvShows);
+                return new TitlesListFragment(yHomePageModel.tvShows, TitlesListFragment.TITLE_TYPE_TV_SHOW);
 
         }
     }
