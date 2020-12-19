@@ -31,8 +31,7 @@ public class LinksAdapter extends RecyclerView.Adapter<LinksViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull LinksViewHolder holder, int position) {
         TvShowsModel.Episode episode = episodes.get(position);
-        holder.episodeLink.setText(episode.downloadLink);
-        holder.episodeName.setText(episode.name);
+        holder.episodeButton.setText(episode.name);
         holder.downloadUrl = episode.downloadLink;
     }
 
