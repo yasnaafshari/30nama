@@ -33,31 +33,20 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (item.getItemId()) {
                     case R.id.homePage: {
-                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                        ft.replace(R.id.fragmentView, homeFragment);
-                        ft.commit();
-
-
+                        replaceMainContentFragment(homeFragment);
                         break;
                     }
                     case R.id.profile: {
 
-                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-
-                        ft.replace(R.id.fragmentView, new ProfileFragment());
-                        ft.commit();
+                        replaceMainContentFragment(new ProfileFragment());
                         break;
                     }
                     case R.id.search: {
-                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                        ft.replace(R.id.fragmentView, new SearchFragment());
-                        ft.commit();
+                        replaceMainContentFragment(new SearchFragment());
                         break;
                     }
                     case R.id.notification:{
-                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                        ft.replace(R.id.fragmentView, new NotificationFragment());
-                        ft.commit();
+                        replaceMainContentFragment(new NotificationFragment());
                         break;
                     }
                 }
@@ -65,10 +54,12 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+        replaceMainContentFragment(homeFragment);
+    }
+
+    private void replaceMainContentFragment(Fragment fragment) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.fragmentView, homeFragment);
+        ft.replace(R.id.fragmentView, fragment);
         ft.commit();
-
-
     }
 }
