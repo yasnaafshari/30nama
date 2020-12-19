@@ -29,6 +29,7 @@ public class LinksViewHolder extends RecyclerView.ViewHolder {
         episodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.setBackgroundColor(v.getContext().getColor(R.color.mainColor));
                 Uri uri = Uri.parse(downloadUrl);
                 Intent downloadIntent = new Intent(Intent.ACTION_VIEW, uri);
                 v.getContext().startActivity(downloadIntent);
