@@ -66,6 +66,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String token) {
                 preferences.edit().putString("token", token).commit();
+                startMainActivity();
             }
 
             @Override
