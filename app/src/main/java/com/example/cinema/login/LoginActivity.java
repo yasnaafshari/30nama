@@ -16,6 +16,7 @@ import android.widget.ImageView;
 
 import com.example.cinema.R;
 import com.example.cinema.MainActivity;
+import com.example.cinema.core.DataCallBack;
 
 public class LoginActivity extends AppCompatActivity {
     final CaptchaModel[] captchaModel = {null};
@@ -61,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login(LoginInformation loginInformation) {
-        yLoginRepository.login(loginInformation, new LoginRepository.LoginCallback() {
+        yLoginRepository.login(loginInformation, new DataCallBack<String>() {
             @Override
             public void onSuccess(String token) {
                 preferences.edit().putString("token", token).commit();
@@ -97,7 +98,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void getCaptcha() {
-        yLoginRepository.getCaptch(new LoginRepository.CaptchaCallback() {
+        yLoginRepository.getCaptch(new DataCallBack<CaptchaModel>() {
             @Override
             public void onSuccess(CaptchaModel captchaModel) {
                 LoginActivity.this.captchaModel[0] = captchaModel;

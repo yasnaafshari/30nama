@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cinema.R;
+import com.example.cinema.core.DataCallBack;
 
 import java.util.List;
 
@@ -32,17 +33,17 @@ public class NotificationFragment extends Fragment {
         NotificationRepository repository = new NotificationRepository();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         String token = preferences.getString("token", null);
-        repository.getNotifications(token, new NotificationRepository.NotificationCallback() {
+        repository.getNotifications(token, new DataCallBack<List<NotificationModel>>() {
             @Override
-            public void onSuccess(List<NotificationModel> notificationModels) {
-                NotificationAdapter adapter = new NotificationAdapter(notificationModels);
+            public void onSuccess(List<NotificationModel> data) {
+                NotificationAdapter adapter = new NotificationAdapter(data);
                 RecyclerView recyclerView = view.findViewById(R.id.notificationRecycler);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             }
 
             @Override
-            public void onFailure() {
+            public void onFailure(String onFailureNote) {
 
             }
         });

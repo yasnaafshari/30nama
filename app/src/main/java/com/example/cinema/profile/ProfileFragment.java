@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.cinema.R;
+import com.example.cinema.core.DataCallBack;
 import com.example.cinema.login.LoginActivity;
 import com.example.cinema.profileLists.ProfileListsFragment;
 
@@ -53,7 +54,7 @@ public class ProfileFragment extends Fragment {
         });
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         String token = preferences.getString("token", null);
-        yProfileRepository.getProfile(token, new ProfileRepository.ProfileCallback() {
+        yProfileRepository.getProfile(token, new DataCallBack<ProfileModel>() {
             @Override
             public void onSuccess(ProfileModel profileModel) {
                 TextView username = getView().findViewById(R.id.username);
@@ -64,7 +65,7 @@ public class ProfileFragment extends Fragment {
             }
 
             @Override
-            public void onFailure() {
+            public void onFailure(String onFailureNote) {
 
             }
         });

@@ -15,6 +15,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.cinema.R;
+import com.example.cinema.core.DataCallBack;
 import com.example.cinema.homePage.TitlesListFragment;
 import com.squareup.picasso.Picasso;
 
@@ -38,7 +39,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         if (titleType == TitlesListFragment.TITLE_TYPE_MOVIE) {
 
-            yDetailPageRepository.getDetailedPage(getIntent().getStringExtra("url"), new DetailPageRepository.DetailsPageCallBack() {
+            yDetailPageRepository.getDetailedPage(getIntent().getStringExtra("url"), new DataCallBack<TvShowsModel.TitlesDetailsModel>() {
                 @Override
                 public void onSuccess(TvShowsModel.TitlesDetailsModel titlesDetailsModel) {
                     TextView story = findViewById(R.id.detailsStory);
@@ -60,7 +61,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         } else if (titleType == TitlesListFragment.TITLE_TYPE_TV_SHOW) {
 
-            yDetailPageRepository.getTvShows(url, token, new DetailPageRepository.TvShowsCallBack() {
+            yDetailPageRepository.getTvShows(url, token, new DataCallBack<TvShowsModel>() {
                 @Override
                 public void onSuccess(TvShowsModel tvShowsModel) {
                     TextView story = findViewById(R.id.detailsStory);

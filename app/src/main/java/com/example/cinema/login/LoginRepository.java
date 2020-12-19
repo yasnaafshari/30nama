@@ -6,6 +6,7 @@ import android.util.Base64;
 import android.widget.ImageView;
 
 import com.example.cinema.R;
+import com.example.cinema.core.DataCallBack;
 import com.example.cinema.core.Network;
 
 import retrofit2.Call;
@@ -13,22 +14,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginRepository {
-    public interface LoginCallback {
-        void onSuccess(String token);
 
-        void onFailure(String message);
-
-
-    }
 
     LoginService service = Network.retrofit.create(LoginService.class);
 
-    void login(LoginInformation loginInformation, LoginCallback loginCallback) {
+    void login(LoginInformation loginInformation, DataCallBack<String> dataCallBack) {
         service.login(loginInformation).enqueue(new Callback<LoginResponseModel>() {
             @Override
             public void onResponse(Call<LoginResponseModel> call, Response<LoginResponseModel> response) {
                 String token = response.body().data;
-                loginCallback.onSuccess(token);
+                dataCallBack.onSuccess(token);
 
 
             }
@@ -39,15 +34,12 @@ public class LoginRepository {
             }
         });
     }
-public interface CaptchaCallback{
-        void onSuccess(CaptchaModel captchaModel);
-        void onFailure(String message);
-}
-    void getCaptch(CaptchaCallback captchaCallback) {
+
+    void getCaptch(DataCallBack<CaptchaModel> dataCallBack) {
         service.getCaptcha().enqueue(new Callback<CaptchaModel>() {
             @Override
             public void onResponse(Call<CaptchaModel> call, Response<CaptchaModel> response) {
-                captchaCallback.onSuccess(response.body());
+                dataCallBack.onSuccess(response.body());
             }
 
             @Override

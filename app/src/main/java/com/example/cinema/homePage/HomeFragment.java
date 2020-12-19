@@ -14,28 +14,17 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.cinema.R;
+import com.example.cinema.core.DataCallBack;
 import com.google.android.material.tabs.TabLayout;
 
 public class HomeFragment extends Fragment {
 
     private ViewPager yTitlesPager;
     private HomePageModel yHomePageModel;
-    HomePageRepository homePageRepository;
+    HomePageRepository homePageRepository = new HomePageRepository();
+
 
     public HomeFragment() {
-        homePageRepository = new HomePageRepository(new HomePageRepository.HomePageCallBack() {
-            @Override
-            public void onSuccess(HomePageModel homePageModel) {
-                yHomePageModel = homePageModel;
-                yTitlesPager.setAdapter(new TitlesPagerAdapter(getParentFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
-                        homePageModel));
-            }
-
-            @Override
-            public void onFailure(String onFailureMessage) {
-
-            }
-        });
 
     }
 
@@ -58,7 +47,19 @@ public class HomeFragment extends Fragment {
             yTitlesPager.setAdapter(new TitlesPagerAdapter(getParentFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
                     yHomePageModel));
         }
-        homePageRepository.getHomePage(token);
+        homePageRepository.getHomePage(token, new DataCallBack<HomePageModel>() {
+            @Override
+            public void onSuccess(HomePageModel homePageModel) {
+                yHomePageModel = homePageModel;
+                yTitlesPager.setAdapter(new TitlesPagerAdapter(getParentFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
+                        homePageModel));
+            }
+
+            @Override
+            public void onFailure(String onFailureMessage) {
+
+            }
+        });
 
 
     }

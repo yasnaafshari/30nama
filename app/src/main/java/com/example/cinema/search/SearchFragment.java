@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cinema.R;
+import com.example.cinema.core.DataCallBack;
 import com.example.cinema.homePage.Title;
 import com.example.cinema.titleslist.TitlesListAdapter;
 
@@ -41,7 +42,7 @@ public class SearchFragment extends Fragment {
            @Override
            public void onTextChanged(CharSequence s, int start, int before, int count) {
               SearchRepository searchRepository = new SearchRepository();
-              searchRepository.getSearchResult( s.toString(), new SearchRepository.SearchCallback() {
+              searchRepository.getSearchResult( s.toString(), new DataCallBack<List<Title>>() {
                   @Override
                   public void onSuccess(List<Title> titles) {
                       RecyclerView searchResult = getView().findViewById(R.id.searchResult);
@@ -51,7 +52,7 @@ public class SearchFragment extends Fragment {
                   }
 
                   @Override
-                  public void onFailure() {
+                  public void onFailure(String onFailureNote) {
 
                   }
               });
