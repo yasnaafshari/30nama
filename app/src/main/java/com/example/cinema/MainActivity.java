@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationBar);
-        HomeFragment homeFragment = new HomeFragment();
+
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 
             @Override
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (item.getItemId()) {
                     case R.id.homePage: {
-                        replaceMainContentFragment(homeFragment);
+                        replaceMainContentFragment(new HomeFragment());
                         break;
                     }
                     case R.id.profile: {
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-        replaceMainContentFragment(homeFragment);
+        replaceMainContentFragment(new HomeFragment());
 
 
         NavigationView navigationView = findViewById(R.id.nav_view);

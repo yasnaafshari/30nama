@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.cinema.R;
@@ -21,12 +23,8 @@ public class HomeFragment extends Fragment {
 
     private ViewPager yTitlesPager;
     private HomePageModel yHomePageModel;
-    HomePageRepository homePageRepository = new HomePageRepository();
+    private HomePageViewModel mHomePageViewModel;
 
-
-    public HomeFragment() {
-
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,6 +34,9 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        mHomePageViewModel = new ViewModelProvider(getActivity()).get(HomePageViewModel.class);
+
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         String token = preferences.getString("token", null);
 
@@ -47,17 +48,13 @@ public class HomeFragment extends Fragment {
             yTitlesPager.setAdapter(new TitlesPagerAdapter(getParentFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
                     yHomePageModel));
         }
-        homePageRepository.getHomePage(token, new DataCallBack<HomePageModel>() {
+
+        mHomePageViewModel.getHomePage(token).observe(getViewLifecycleOwner(), new Observer<HomePageModel>() {
             @Override
-            public void onSuccess(HomePageModel homePageModel) {
+            public void onChanged(HomePageModel homePageModel) {
                 yHomePageModel = homePageModel;
                 yTitlesPager.setAdapter(new TitlesPagerAdapter(getParentFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
                         homePageModel));
-            }
-
-            @Override
-            public void onFailure(String onFailureMessage) {
-
             }
         });
 

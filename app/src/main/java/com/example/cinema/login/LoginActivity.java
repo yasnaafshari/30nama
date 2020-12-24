@@ -1,6 +1,8 @@
 package com.example.cinema.login;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,21 +23,20 @@ import com.example.cinema.core.DataCallBack;
 
 public class LoginActivity extends AppCompatActivity {
     final CaptchaModel[] captchaModel = {null};
-    LoginRepository yLoginRepository = new LoginRepository();
     SharedPreferences preferences;
+    LoginViewModel loginViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
         if(isLoggedIn()) {
             startMainActivity();
         }
-
         setupNewCaptcha();
-
         setupLogin();
 
     }
@@ -44,36 +46,32 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoginInformation loginInformation = getLoginInformation();
-                login(loginInformation);
+                LoginRequest loginRequest = getLoginInformation();
+                login(loginRequest);
 
             }
         });
     }
 
-    private LoginInformation getLoginInformation() {
+    private LoginRequest getLoginInformation() {
         EditText editTextEmail = findViewById(R.id.editTextEmail);
         EditText editTextPass = findViewById(R.id.editTextPass);
         EditText editTextCaptcha = findViewById(R.id.captcha);
         String email = editTextEmail.getText().toString();
         String password = editTextPass.getText().toString();
         String captcha = editTextCaptcha.getText().toString();
-        return new LoginInformation(email,password,captcha, captchaModel[0].session);
+        return new LoginRequest(email,password,captcha, captchaModel[0].session);
     }
 
-    private void login(LoginInformation loginInformation) {
-        yLoginRepository.login(loginInformation, new DataCallBack<String>() {
+    private void login(LoginRequest loginRequest) {
+        loginViewModel.login(loginRequest).observe(this, new Observer<String>() {
             @Override
-            public void onSuccess(String token) {
+            public void onChanged(String token) {
                 preferences.edit().putString("token", token).commit();
                 startMainActivity();
             }
-
-            @Override
-            public void onFailure(String message) {
-
-            }
         });
+
     }
 
     private void setupNewCaptcha() {
@@ -99,19 +97,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void getCaptcha() {
-        yLoginRepository.getCaptch(new DataCallBack<CaptchaModel>() {
+        loginViewModel.getCaptcha().observe(this, new Observer<CaptchaModel>() {
             @Override
-            public void onSuccess(CaptchaModel captchaModel) {
+            public void onChanged(CaptchaModel captchaModel) {
                 LoginActivity.this.captchaModel[0] = captchaModel;
                 byte[] decodedString = Base64.decode(captchaModel.captcha, Base64.DEFAULT);
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                 ImageView image = findViewById(R.id.imageView);
                 image.setImageBitmap(decodedByte);
-            }
-
-            @Override
-            public void onFailure(String message) {
-
             }
         });
     }

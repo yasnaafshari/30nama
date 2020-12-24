@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.cinema.R;
 import com.example.cinema.core.DataCallBack;
@@ -20,7 +22,6 @@ import com.example.cinema.login.LoginActivity;
 import com.example.cinema.profileLists.ProfileListsFragment;
 
 public class ProfileFragment extends Fragment {
-    ProfileRepository yProfileRepository = new ProfileRepository();
 
     @Nullable
     @Override
@@ -54,25 +55,26 @@ public class ProfileFragment extends Fragment {
         });
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         String token = preferences.getString("token", null);
-        yProfileRepository.getProfile(token, new DataCallBack<ProfileModel>() {
+
+
+        ProfileViewModel viewModel = new ViewModelProvider(getActivity()).get(ProfileViewModel.class);
+        viewModel.getProfile(token).observe(getViewLifecycleOwner(), new Observer<ProfileModel>() {
             @Override
-            public void onSuccess(ProfileModel profileModel) {
+            public void onChanged(ProfileModel profileModel) {
+
                 TextView username = getView().findViewById(R.id.username);
                 username.setText(profileModel.username);
                 TextView subscriptionStatus = getView().findViewById(R.id.subscriptionStatus);
                 subscriptionStatus.setText(profileModel.subscriptionStatus);
-
-            }
-
-            @Override
-            public void onFailure(String onFailureNote) {
-
             }
         });
+
+
     }
-   void replaceLists(String listName){
-       FragmentTransaction ft = getParentFragmentManager().beginTransaction();
-       ft.replace(R.id.fragmentView, ProfileListsFragment.newInstance(listName)).addToBackStack(listName);
-       ft.commit();
-   }
+
+    void replaceLists(String listName) {
+        FragmentTransaction ft = getParentFragmentManager().beginTransaction();
+        ft.replace(R.id.fragmentView, ProfileListsFragment.newInstance(listName)).addToBackStack(listName);
+        ft.commit();
+    }
 }

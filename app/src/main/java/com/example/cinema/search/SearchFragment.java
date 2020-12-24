@@ -11,6 +11,9 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -41,21 +44,17 @@ public class SearchFragment extends Fragment {
 
            @Override
            public void onTextChanged(CharSequence s, int start, int before, int count) {
-              SearchRepository searchRepository = new SearchRepository();
-              searchRepository.getSearchResult( s.toString(), new DataCallBack<List<Title>>() {
-                  @Override
-                  public void onSuccess(List<Title> titles) {
-                      RecyclerView searchResult = getView().findViewById(R.id.searchResult);
-                      searchResult.setLayoutManager(new LinearLayoutManager(getContext()));
-                      searchResult.setAdapter(new TitlesListAdapter(titles, 0));
+               SearchViewModel searchViewModel = new ViewModelProvider(SearchFragment.this).get(SearchViewModel.class);
+               searchViewModel.getSearchResults(s.toString()).observe(getViewLifecycleOwner(), new Observer<List<Title>>() {
+                   @Override
+                   public void onChanged(List<Title> titles) {
+                       RecyclerView searchResult = getView().findViewById(R.id.searchResult);
+                       searchResult.setLayoutManager(new LinearLayoutManager(getContext()));
+                       searchResult.setAdapter(new TitlesListAdapter(titles, 0));
 
-                  }
+                   }
+               });
 
-                  @Override
-                  public void onFailure(String onFailureNote) {
-
-                  }
-              });
            }
 
            @Override

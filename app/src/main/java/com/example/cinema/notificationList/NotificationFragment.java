@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,23 +33,20 @@ public class NotificationFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        NotificationRepository repository = new NotificationRepository();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         String token = preferences.getString("token", null);
-        repository.getNotifications(token, new DataCallBack<List<NotificationModel>>() {
+        NotificationViewModel notificationViewModel = new ViewModelProvider(getActivity()).get(NotificationViewModel.class);
+        notificationViewModel.getNotifications(token).observe(getViewLifecycleOwner(), new Observer<List<NotificationModel>>() {
             @Override
-            public void onSuccess(List<NotificationModel> data) {
-                NotificationAdapter adapter = new NotificationAdapter(data);
+            public void onChanged(List<NotificationModel> notificationModels) {
+                NotificationAdapter adapter = new NotificationAdapter(notificationModels);
                 RecyclerView recyclerView = view.findViewById(R.id.notificationRecycler);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            }
-
-            @Override
-            public void onFailure(String onFailureNote) {
 
             }
         });
+
 
     }
 }

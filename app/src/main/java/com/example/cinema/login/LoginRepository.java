@@ -1,11 +1,5 @@
 package com.example.cinema.login;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
-import android.widget.ImageView;
-
-import com.example.cinema.R;
 import com.example.cinema.core.DataCallBack;
 import com.example.cinema.core.Network;
 
@@ -18,8 +12,8 @@ public class LoginRepository {
 
     LoginService service = Network.retrofit.create(LoginService.class);
 
-    void login(LoginInformation loginInformation, DataCallBack<String> dataCallBack) {
-        service.login(loginInformation).enqueue(new Callback<LoginResponseModel>() {
+    void login(LoginRequest loginRequest, DataCallBack<String> dataCallBack) {
+        service.login(loginRequest).enqueue(new Callback<LoginResponseModel>() {
             @Override
             public void onResponse(Call<LoginResponseModel> call, Response<LoginResponseModel> response) {
                 String token = response.body().data;
