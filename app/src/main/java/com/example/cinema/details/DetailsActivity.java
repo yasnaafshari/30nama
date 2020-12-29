@@ -1,6 +1,8 @@
 package com.example.cinema.details;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,7 +12,9 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -23,18 +27,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DetailsActivity extends AppCompatActivity {
-    DetailPageRepository yDetailPageRepository = new DetailPageRepository();
     Spinner qualitySpinner;
     RecyclerView linksRecycler;
     Spinner seasonSpinner;
+    DetailsViewModel mDetailsViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+        mDetailsViewModel = new ViewModelProvider(this).get(DetailsViewModel.class);
         qualitySpinner = findViewById(R.id.qualitySpinner);
         seasonSpinner = findViewById(R.id.seasonSpinner);
         linksRecycler = findViewById(R.id.linksRecycler);
+        setUpDetails();
+    }
+
+    private void setUpDetails() {
         int titleType = getIntent().getIntExtra("type", 0);
         String token = getToken();
         String url = getIntent().getStringExtra("url");
@@ -43,9 +52,15 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private void fetchDetails(int titleType, String token, String url) {
+        mDetailsViewModel.getOnError().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                showError(s);
+            }
+        });
         if (titleType == TitlesListFragment.TITLE_TYPE_MOVIE) {
 
-            fetchTitleDetails();
+            fetchMovies(url);
 
         } else if (titleType == TitlesListFragment.TITLE_TYPE_TV_SHOW) {
 
@@ -53,27 +68,44 @@ public class DetailsActivity extends AppCompatActivity {
         }
     }
 
+    private void fetchMovies(String url) {
+        mDetailsViewModel.fetchTitleDetails(url).observe(this, new Observer<TvShowsModel.TitlesDetailsModel>() {
+            @Override
+            public void onChanged(TvShowsModel.TitlesDetailsModel titlesDetailsModel) {
+                setTitlesDetails(titlesDetailsModel);
+            }
+        });
+    }
+
+    private void fetchTvShows(String token, String url) {
+        mDetailsViewModel.fetchTvShows(token,url).observe(this, new Observer<TvShowsModel>() {
+            @Override
+            public void onChanged(TvShowsModel tvShowsModel) {
+                setTitlesDetails(tvShowsModel.details);
+                setUpSeasonsSpinner(tvShowsModel);
+                setUpQualitySpinner(tvShowsModel, 0);
+                setUpDownloadLinks(tvShowsModel,0,0);
+            }
+        });
+    }
+
     private String getToken() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         return preferences.getString("token", null);
     }
 
-    private void fetchTvShows(String token, String url) {
-        yDetailPageRepository.getTvShows(url, token, new DataCallBack<TvShowsModel>() {
+
+    private void showError(String onFailureNote) {
+        TextView text = findViewById(R.id.onFailureNote);
+        Button retryButton = findViewById(R.id.retryButton);
+        LinearLayout errorContainer = findViewById(R.id.errorContainer);
+        text.setText(onFailureNote);
+        errorContainer.setVisibility(View.VISIBLE);
+        retryButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSuccess(TvShowsModel tvShowsModel) {
-                setTitlesDetails(tvShowsModel.details);
-                setUpSeasonsSpinner(tvShowsModel);
-                setUpQualitySpinner(tvShowsModel, 0);
-                setUpDownloadLinks(tvShowsModel,0,0);
-
-
-            }
-
-
-            @Override
-            public void onFailure(String onFailureNote) {
-
+            public void onClick(View v) {
+                setUpDetails();
+                errorContainer.setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -132,21 +164,6 @@ public class DetailsActivity extends AppCompatActivity {
         title.setText(details.title);
     }
 
-    private void fetchTitleDetails() {
-        yDetailPageRepository.getDetailedPage(getIntent().getStringExtra("url"), new DataCallBack<TvShowsModel.TitlesDetailsModel>() {
-            @Override
-            public void onSuccess(TvShowsModel.TitlesDetailsModel titlesDetailsModel) {
-                setTitlesDetails(titlesDetailsModel);
-
-            }
-
-
-            @Override
-            public void onFailure(String onFailureNote) {
-
-            }
-        });
-    }
 
     private void setUpDownloadLinks(TvShowsModel tvShowsModel,int position, int qualityPosition) {
         linksRecycler.setAdapter(new LinksAdapter(tvShowsModel.mSeasonPack.get(position).seasons.get(qualityPosition).downloadLinks));
