@@ -17,8 +17,13 @@ public class HomePageRepository {
         service.getHomePage(token).enqueue(new Callback<HomePageModel>() {
             @Override
             public void onResponse(Call<HomePageModel> call, Response<HomePageModel> response) {
-                HomePageModel homePageModel = response.body();
-                dataCallBack.onSuccess(homePageModel);
+              if(response.isSuccessful()) {
+                  HomePageModel homePageModel = response.body();
+                  dataCallBack.onSuccess(homePageModel);
+              }
+              else {
+                  dataCallBack.onFailure("an unknown error has occurred");
+              }
 
             }
 

@@ -17,11 +17,13 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.cinema.R;
+import com.example.cinema.core.BaseFragment;
 import com.example.cinema.core.DataCallBack;
 import com.example.cinema.login.LoginActivity;
 import com.example.cinema.profileLists.ProfileListsFragment;
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends BaseFragment {
+    ProfileViewModel viewModel;
 
     @Nullable
     @Override
@@ -53,11 +55,22 @@ public class ProfileFragment extends Fragment {
                 replaceLists(ProfileListsFragment.WATCH_LIST);
             }
         });
+
+
+        viewModel = new ViewModelProvider(getActivity()).get(ProfileViewModel.class);
+        setUpProfile();
+        viewModel.getErrorMutableLiveData().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                showError(s);
+            }
+        });
+
+    }
+
+    private void setUpProfile() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         String token = preferences.getString("token", null);
-
-
-        ProfileViewModel viewModel = new ViewModelProvider(getActivity()).get(ProfileViewModel.class);
         viewModel.getProfile(token).observe(getViewLifecycleOwner(), new Observer<ProfileModel>() {
             @Override
             public void onChanged(ProfileModel profileModel) {
@@ -68,13 +81,16 @@ public class ProfileFragment extends Fragment {
                 subscriptionStatus.setText(profileModel.subscriptionStatus);
             }
         });
-
-
     }
 
     void replaceLists(String listName) {
         FragmentTransaction ft = getParentFragmentManager().beginTransaction();
         ft.replace(R.id.fragmentView, ProfileListsFragment.newInstance(listName)).addToBackStack(listName);
         ft.commit();
+    }
+
+    @Override
+    public void onRetryClicked() {
+        setUpProfile();
     }
 }

@@ -9,6 +9,7 @@ import com.example.cinema.core.DataCallBack;
 public class HomePageViewModel extends ViewModel {
     HomePageRepository homePageRepository = new HomePageRepository();
     private MutableLiveData<HomePageModel> mHomePageViewModelLiveData = new MutableLiveData<>();
+    private MutableLiveData<String> errorHomePageViewModelLiveData = new MutableLiveData<>();
 
     public LiveData<HomePageModel> getHomePage(String token) {
         if (mHomePageViewModelLiveData.getValue() == null)
@@ -20,11 +21,14 @@ public class HomePageViewModel extends ViewModel {
 
             @Override
             public void onFailure(String onFailureMessage) {
-                System.out.println(onFailureMessage);
+                errorHomePageViewModelLiveData.setValue(onFailureMessage);
             }
         });}
         return mHomePageViewModelLiveData;
 
     }
 
+    public LiveData<String> getErrorHomePageViewModelLiveData() {
+        return errorHomePageViewModelLiveData;
+    }
 }

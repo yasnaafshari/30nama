@@ -13,6 +13,12 @@ public class ProfileViewModel extends ViewModel {
     private ProfileRepository yProfileRepository = new ProfileRepository();
     private MutableLiveData<ProfileModel> mProfileModelMutableLiveData = new MutableLiveData<>();
 
+    public LiveData<String> getErrorMutableLiveData() {
+        return errorMutableLiveData;
+    }
+
+    private MutableLiveData<String> errorMutableLiveData = new MutableLiveData<>();
+
     public LiveData<ProfileModel> getProfile(String token) {
         if (mProfileModelMutableLiveData.getValue() == null) {
             yProfileRepository.getProfile(token, new DataCallBack<ProfileModel>() {
@@ -24,7 +30,7 @@ public class ProfileViewModel extends ViewModel {
 
                 @Override
                 public void onFailure(String onFailureNote) {
-
+                    errorMutableLiveData.setValue(onFailureNote);
                 }
             });
         }

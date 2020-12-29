@@ -94,20 +94,9 @@ public class DetailsActivity extends AppCompatActivity {
         return preferences.getString("token", null);
     }
 
-
-    private void showError(String onFailureNote) {
-        TextView text = findViewById(R.id.onFailureNote);
-        Button retryButton = findViewById(R.id.retryButton);
-        LinearLayout errorContainer = findViewById(R.id.errorContainer);
-        text.setText(onFailureNote);
-        errorContainer.setVisibility(View.VISIBLE);
-        retryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setUpDetails();
-                errorContainer.setVisibility(View.INVISIBLE);
-            }
-        });
+    @Override
+    public void onRetryClicked() {
+        setUpDetails();
     }
 
     private void handleQualitySelection(TvShowsModel tvShowsModel) {

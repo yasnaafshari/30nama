@@ -25,7 +25,7 @@ public class DetailPageRepository {
 
             @Override
             public void onFailure(Call<TvShowsModel.TitlesDetailsModel> call, Throwable t) {
-
+                detailsModelDataCallBack.onFailure("an unknown error has occurred");
             }
         });
     }
@@ -42,7 +42,7 @@ public class DetailPageRepository {
 
             @Override
             public void onFailure(Call<TvShowsModel> call, Throwable t) {
-
+                dataCallBack.onFailure("an unknown error has occurred");
             }
         });
 

@@ -6,6 +6,9 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,10 +19,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.cinema.R;
+import com.example.cinema.core.BaseFragment;
 import com.example.cinema.core.DataCallBack;
 import com.google.android.material.tabs.TabLayout;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends BaseFragment {
 
     private ViewPager yTitlesPager;
     private HomePageModel yHomePageModel;
@@ -37,8 +41,6 @@ public class HomeFragment extends Fragment {
 
         mHomePageViewModel = new ViewModelProvider(getActivity()).get(HomePageViewModel.class);
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String token = preferences.getString("token", null);
 
         yTitlesPager = getView().findViewById(R.id.titlesPager);
 
@@ -49,7 +51,22 @@ public class HomeFragment extends Fragment {
                     yHomePageModel));
         }
 
+        setUpHomePage();
+        mHomePageViewModel.getErrorHomePageViewModelLiveData().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                showError(s);
+            }
+        });
+
+    }
+
+    private void setUpHomePage() {
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String token = preferences.getString("token", null);
         mHomePageViewModel.getHomePage(token).observe(getViewLifecycleOwner(), new Observer<HomePageModel>() {
+
             @Override
             public void onChanged(HomePageModel homePageModel) {
                 yHomePageModel = homePageModel;
@@ -57,8 +74,6 @@ public class HomeFragment extends Fragment {
                         homePageModel));
             }
         });
-
-
     }
 
     @Nullable
@@ -66,5 +81,10 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_home, container, false);
 
+    }
+
+    @Override
+    public void onRetryClicked() {
+        setUpHomePage();
     }
 }

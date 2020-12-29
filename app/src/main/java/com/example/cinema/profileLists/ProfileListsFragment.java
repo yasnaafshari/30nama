@@ -10,13 +10,16 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cinema.R;
 import com.example.cinema.core.Network;
+import com.example.cinema.details.DetailsFragment;
 import com.example.cinema.homePage.Title;
 import com.example.cinema.titleslist.TitlesListAdapter;
+import com.example.cinema.titleslist.TitlesListViewHolder;
 
 import java.util.List;
 
@@ -35,7 +38,7 @@ public class ProfileListsFragment extends Fragment {
     public static ProfileListsFragment newInstance(String listName) {
 
         Bundle args = new Bundle();
-        args.putString(KEY_LIST_NAME,listName);
+        args.putString(KEY_LIST_NAME, listName);
         ProfileListsFragment fragment = new ProfileListsFragment();
         fragment.setArguments(args);
         return fragment;
@@ -59,7 +62,14 @@ public class ProfileListsFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Title>> call, Response<List<Title>> response) {
                 List<Title> list = response.body();
-                listRecycler.setAdapter(new TitlesListAdapter(list, 0));
+                listRecycler.setAdapter(new TitlesListAdapter(list, 0, new TitlesListViewHolder.OnItemListener() {
+                    @Override
+                    public void onItemClick(String url, int titleType) {
+                        FragmentTransaction ft = getParentFragmentManager().beginTransaction();
+                        ft.replace(R.id.fragmentView, DetailsFragment.newInstance(url, titleType)).addToBackStack("details fragment");
+                        ft.commit();
+                    }
+                }));
 
             }
 
@@ -78,8 +88,6 @@ public class ProfileListsFragment extends Fragment {
                 service.getFavourite(token).enqueue(listCallback);
 
         }
-
-
 
 
     }

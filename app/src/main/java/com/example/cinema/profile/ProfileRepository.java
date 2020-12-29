@@ -8,6 +8,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ProfileRepository {
+
     public void getProfile(String token, DataCallBack<ProfileModel> dataCallBack) {
         ProfileService profileService = Network.retrofit.create(ProfileService.class);
         profileService.getProfile(new TokenModel(token)).enqueue(new Callback<ProfileModel>() {
