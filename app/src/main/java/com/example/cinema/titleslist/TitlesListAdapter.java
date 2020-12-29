@@ -17,12 +17,13 @@ import java.util.List;
 public class TitlesListAdapter extends RecyclerView.Adapter<TitlesListViewHolder> {
     List<Title> titles;
     int titleType;
+    TitlesListViewHolder.OnItemListener mOnItemListener;
 
-    public TitlesListAdapter(List<Title> titles, int titleType) {
+    public TitlesListAdapter(List<Title> titles, int titleType, TitlesListViewHolder.OnItemListener onItemListener) {
         this.titles = titles;
         this.titleType = titleType;
+        mOnItemListener = onItemListener;
     }
-
 
     @NonNull
     @Override
@@ -30,7 +31,7 @@ public class TitlesListAdapter extends RecyclerView.Adapter<TitlesListViewHolder
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View contactView = inflater.inflate(R.layout.item_title, parent, false);
-        return new TitlesListViewHolder(contactView, titleType);
+        return new TitlesListViewHolder(contactView, titleType, mOnItemListener);
 
     }
 

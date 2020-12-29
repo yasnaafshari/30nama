@@ -9,20 +9,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cinema.R;
 import com.example.cinema.core.Network;
-import com.example.cinema.details.DetailsActivity;
-import com.example.cinema.homePage.Title;
-
-import java.util.List;
+import com.example.cinema.details.DetailsFragment;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class TitlesListViewHolder extends RecyclerView.ViewHolder {
+    OnItemListener mOnItemListener;
     ImageView imageView;
     TextView textView;
     String url;
@@ -33,9 +33,11 @@ public class TitlesListViewHolder extends RecyclerView.ViewHolder {
     String nonce;
     int titleType;
 
-    public TitlesListViewHolder(@NonNull View itemView, int titleType) {
+    public TitlesListViewHolder(@NonNull View itemView, int titleType,OnItemListener mOnItemListener) {
         super(itemView);
         this.titleType = titleType;
+        this.mOnItemListener = mOnItemListener;
+
         textView = itemView.findViewById(R.id.itemText);
         imageView = itemView.findViewById(R.id.itemImage);
         likeButton = itemView.findViewById(R.id.likeButton);
@@ -99,12 +101,13 @@ public class TitlesListViewHolder extends RecyclerView.ViewHolder {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(imageView.getContext(), DetailsActivity.class);
-                i.putExtra("url", url);
-                i.putExtra("type", TitlesListViewHolder.this.titleType);
-                imageView.getContext().startActivity(i);
+                mOnItemListener.onItemClick(url,titleType);
+
             }
         });
     }
 
+public interface OnItemListener{
+        void onItemClick(String url,int titleType);
+}
 }
