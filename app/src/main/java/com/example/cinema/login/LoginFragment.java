@@ -1,6 +1,9 @@
 package com.example.cinema.login;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -11,38 +14,40 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Base64;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.example.cinema.R;
 import com.example.cinema.MainActivity;
-import com.example.cinema.core.DataCallBack;
+import com.example.cinema.mainContent.MainContentFragment;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginFragment extends Fragment {
     final CaptchaModel[] captchaModel = {null};
     SharedPreferences preferences;
     LoginViewModel loginViewModel;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_login,container,false);
+    }
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+        preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
-        if(isLoggedIn()) {
-            startMainActivity();
-        }
         setupNewCaptcha();
         setupLogin();
-
     }
 
     private void setupLogin() {
-        Button loginButton = findViewById(R.id.signInButton);
+        Button loginButton = getView().findViewById(R.id.signInButton);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,9 +59,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private LoginRequest getLoginInformation() {
-        EditText editTextEmail = findViewById(R.id.editTextEmail);
-        EditText editTextPass = findViewById(R.id.editTextPass);
-        EditText editTextCaptcha = findViewById(R.id.captcha);
+        EditText editTextEmail = getView().findViewById(R.id.editTextEmail);
+        EditText editTextPass = getView().findViewById(R.id.editTextPass);
+        EditText editTextCaptcha = getView().findViewById(R.id.captcha);
         String email = editTextEmail.getText().toString();
         String password = editTextPass.getText().toString();
         String captcha = editTextCaptcha.getText().toString();
@@ -75,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setupNewCaptcha() {
-        Button retryButton = findViewById(R.id.retry);
+        Button retryButton = getView().findViewById(R.id.retry);
         retryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,25 +90,19 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void startMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
-    private boolean isLoggedIn() {
-        preferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
-        String token = preferences.getString("token", null);
-        return token != null;
+        FragmentTransaction ft = getParentFragmentManager().beginTransaction();
+        ft.replace(R.id.fragmentView, new MainContentFragment());
+        ft.commit();
     }
 
     private void getCaptcha() {
         loginViewModel.getCaptcha().observe(this, new Observer<CaptchaModel>() {
             @Override
             public void onChanged(CaptchaModel captchaModel) {
-                LoginActivity.this.captchaModel[0] = captchaModel;
+                LoginFragment.this.captchaModel[0] = captchaModel;
                 byte[] decodedString = Base64.decode(captchaModel.captcha, Base64.DEFAULT);
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                ImageView image = findViewById(R.id.imageView);
+                ImageView image = getView().findViewById(R.id.imageView);
                 image.setImageBitmap(decodedByte);
             }
         });

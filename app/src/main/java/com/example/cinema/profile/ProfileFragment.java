@@ -11,15 +11,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.cinema.R;
 import com.example.cinema.core.BaseFragment;
-import com.example.cinema.core.DataCallBack;
-import com.example.cinema.login.LoginActivity;
 import com.example.cinema.profileLists.ProfileListsFragment;
 
 public class ProfileFragment extends BaseFragment {
