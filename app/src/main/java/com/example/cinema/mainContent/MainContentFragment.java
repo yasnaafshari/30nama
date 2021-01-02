@@ -1,6 +1,6 @@
 package com.example.cinema.mainContent;
 
-import android.content.Intent;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -15,15 +15,16 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-import com.example.cinema.MainActivity;
+
 import com.example.cinema.R;
 import com.example.cinema.categories.CategoriesFragment;
 import com.example.cinema.homePage.HomeFragment;
 import com.example.cinema.login.LoginFragment;
 import com.example.cinema.news.NewsFragment;
 import com.example.cinema.notificationList.NotificationFragment;
-import com.example.cinema.profile.ProfileFragment;
+import com.example.cinema.profileLists.ProfileListsFragment;
 import com.example.cinema.search.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -41,6 +42,7 @@ public class MainContentFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         DrawerLayout drawerLayout = getView().findViewById(R.id.drawer);
 
+
         BottomNavigationView bottomNavigationView = getView().findViewById(R.id.bottomNavigationBar);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -51,11 +53,6 @@ public class MainContentFragment extends Fragment {
                 switch (item.getItemId()) {
                     case R.id.homePage: {
                         replaceCurrentFragment(new HomeFragment());
-                        break;
-                    }
-                    case R.id.profile: {
-
-                        replaceCurrentFragment(new ProfileFragment());
                         break;
                     }
                     case R.id.search: {
@@ -74,6 +71,10 @@ public class MainContentFragment extends Fragment {
 
 
         NavigationView navigationView = getView().findViewById(R.id.nav_view);
+        TextView username = navigationView.getHeaderView(0).findViewById(R.id.username);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String userName = sharedPreferences.getString("username", "Yasna Afshari");
+        username.setText(userName);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -92,8 +93,15 @@ public class MainContentFragment extends Fragment {
                     case R.id.news:
                         replaceCurrentFragment(new NewsFragment());
                         break;
-
-
+                    case R.id.downloadList:
+                        replaceCurrentFragment(ProfileListsFragment.newInstance(ProfileListsFragment.DOWNLOADS));
+                        break;
+                    case R.id.watchList:
+                        replaceCurrentFragment(ProfileListsFragment.newInstance(ProfileListsFragment.WATCH_LIST));
+                        break;
+                    case R.id.favouritesList:
+                        replaceCurrentFragment(ProfileListsFragment.newInstance(ProfileListsFragment.FAVOURITES));
+                        break;
                 }
                 drawerLayout.closeDrawers();
                 return false;

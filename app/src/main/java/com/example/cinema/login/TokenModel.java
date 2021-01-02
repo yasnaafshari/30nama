@@ -1,4 +1,4 @@
-package com.example.cinema.profile;
+package com.example.cinema.login;
 
 public class TokenModel {
     String token;

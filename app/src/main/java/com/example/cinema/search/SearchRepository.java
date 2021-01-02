@@ -3,7 +3,6 @@ package com.example.cinema.search;
 import com.example.cinema.core.DataCallBack;
 import com.example.cinema.core.Network;
 import com.example.cinema.homePage.Title;
-import com.example.cinema.profile.ProfileService;
 
 import java.util.List;
 
