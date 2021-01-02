@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -29,7 +30,6 @@ import com.google.android.material.navigation.NavigationView;
 
 public class MainContentFragment extends Fragment {
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -39,7 +39,7 @@ public class MainContentFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        DrawerLayout drawerLayout = getView().findViewById(R.id.drawer);
 
         BottomNavigationView bottomNavigationView = getView().findViewById(R.id.bottomNavigationBar);
 
@@ -67,7 +67,6 @@ public class MainContentFragment extends Fragment {
                         break;
                     }
                 }
-
                 return true;
             }
         });
@@ -89,11 +88,14 @@ public class MainContentFragment extends Fragment {
                         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
                         preferences.edit().putString("token", null).commit();
                         replaceMainFragment(new LoginFragment());
+                        break;
                     case R.id.news:
                         replaceCurrentFragment(new NewsFragment());
+                        break;
 
 
                 }
+                drawerLayout.closeDrawers();
                 return false;
             }
         });
@@ -105,6 +107,7 @@ public class MainContentFragment extends Fragment {
         ft.replace(R.id.mainFragmentView, fragment).addToBackStack(fragment.toString());
         ft.commit();
     }
+
     private void replaceMainFragment(Fragment fragment) {
         FragmentTransaction ft = getParentFragmentManager().beginTransaction();
         ft.replace(R.id.fragmentView, fragment).addToBackStack(fragment.toString());
