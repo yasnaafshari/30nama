@@ -26,9 +26,6 @@ public class TitlesListViewHolder extends RecyclerView.ViewHolder {
     ImageView imageView;
     TextView textView;
     String url;
-    Button likeButton;
-    Button downloadButton;
-    Button watchListButton;
     int id;
     String nonce;
     int titleType;
@@ -40,64 +37,9 @@ public class TitlesListViewHolder extends RecyclerView.ViewHolder {
 
         textView = itemView.findViewById(R.id.itemText);
         imageView = itemView.findViewById(R.id.itemImage);
-        likeButton = itemView.findViewById(R.id.likeButton);
-        downloadButton = itemView.findViewById(R.id.downloadListButton);
-        watchListButton = itemView.findViewById(R.id.watchListButton);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(itemView.getContext());
         String token = preferences.getString("token", null);
 
-        downloadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TitleActionsService titleActionsService = Network.retrofit.create(TitleActionsService.class);
-                titleActionsService.addToDownload(token, id, nonce).enqueue(new Callback<Object>() {
-                    @Override
-                    public void onResponse(Call<Object> call, Response<Object> response) {
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<Object> call, Throwable t) {
-
-                    }
-                });
-            }
-        });
-        likeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                v.setBackground(v.getContext().getDrawable(R.drawable.ic_button_like));
-                TitleActionsService titleActionsService = Network.retrofit.create(TitleActionsService.class);
-                titleActionsService.addToFavourite(token, id, nonce).enqueue(new Callback<Object>() {
-                    @Override
-                    public void onResponse(Call<Object> call, Response<Object> response) {
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<Object> call, Throwable t) {
-
-                    }
-                });
-            }
-        });
-        watchListButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TitleActionsService titleActionsService = Network.retrofit.create(TitleActionsService.class);
-                titleActionsService.addToWatchList(token,id, nonce).enqueue(new Callback<Object>() {
-                    @Override
-                    public void onResponse(Call<Object> call, Response<Object> response) {
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<Object> call, Throwable t) {
-
-                    }
-                });
-            }
-        });
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

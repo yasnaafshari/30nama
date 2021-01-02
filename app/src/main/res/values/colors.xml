@@ -11,6 +11,7 @@
     <color name="liked">#700E19</color>
     <color name="black">#000</color>
     <color name="textLightWhite">#F2F2F2</color>
+    <color name="transparent">#00FFFFFF</color>
     <color name="episodeDownloadLinkTextColor">#3399FF</color>
 
 </resources>

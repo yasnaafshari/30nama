@@ -23,10 +23,6 @@ public class TitlesPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                List<Title> suggestion = new ArrayList<>();
-                suggestion.add(new Title(yHomePageModel.suggestionTitle.url, yHomePageModel.suggestionTitle.imageUrl, yHomePageModel.suggestionTitle.title, 0));
-                return new TitlesListFragment(suggestion, TitlesListFragment.TITLE_TYPE_MOVIE);
-            case 3:
                 return new TitlesListFragment(yHomePageModel.featured, TitlesListFragment.TITLE_TYPE_MOVIE);
             case 1:
                 return new TitlesListFragment(yHomePageModel.movies, TitlesListFragment.TITLE_TYPE_MOVIE);
@@ -40,7 +36,7 @@ public class TitlesPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return 4;
+        return 3;
     }
 
     @Nullable
@@ -48,7 +44,7 @@ public class TitlesPagerAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "SUGGESTION";
+                return "FEATURED";
             case 1:
                 return "MOVIES";
             case 2:

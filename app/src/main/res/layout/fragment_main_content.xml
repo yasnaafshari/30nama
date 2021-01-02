@@ -22,8 +22,10 @@
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:itemIconTint="@color/episodeDownloadLinkTextColor"
             app:menu="@menu/menu_bottom"
-            android:background="@color/navigationBar_background"
+            app:itemTextColor="@color/episodeDownloadLinkTextColor"
+            android:background="@color/black"
             android:id="@+id/bottomNavigationBar"/>
 
     </LinearLayout>

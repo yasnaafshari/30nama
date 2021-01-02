@@ -17,6 +17,8 @@
             android:layout_height="match_parent">
 
             <com.google.android.material.tabs.TabLayout
+                android:background="@color/black"
+                app:tabTextColor="@color/episodeDownloadLinkTextColor"
                 android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

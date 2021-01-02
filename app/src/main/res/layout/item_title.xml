@@ -3,6 +3,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:backgroundTint="@color/black"
     android:layout_margin="16dp">
 
     <LinearLayout
@@ -10,49 +11,18 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/itemText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp" />
-
         <ImageView
             android:id="@+id/itemImage"
             android:layout_width="match_parent"
-            android:layout_height="350dp" />
-
-        <LinearLayout
+            android:layout_height="250dp" />
+        <TextView
+            android:id="@+id/itemText"
+            android:textColor="@color/episodeDownloadLinkTextColor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/likeButton"
-                android:layout_margin="16dp"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@drawable/ic_button_like_1" />
-
-            <Button
-                android:layout_width="60dp"
-                android:layout_margin="16dp"
-                android:layout_height="60dp"
-                android:id="@+id/downloadListButton"
-                android:background="@drawable/ic_button_download" />
-
-            <Button
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_margin="16dp"
-                android:id="@+id/watchListButton"
-                android:background="@drawable/ic_button_watchlist"/>
-
-
-        </LinearLayout>
-
-
+            android:layout_gravity="bottom"
+            android:maxLines="1"
+            android:textSize="20sp" />
     </LinearLayout>
 
 
