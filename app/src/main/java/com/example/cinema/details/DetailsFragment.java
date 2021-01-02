@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,7 +40,7 @@ public class DetailsFragment extends BaseFragment {
     public static DetailsFragment newInstance(String url, int titleType) {
 
         Bundle args = new Bundle();
-        args.putInt("type",titleType);
+        args.putInt("type", titleType);
         args.putString("url", url);
         DetailsFragment fragment = new DetailsFragment();
         fragment.setArguments(args);
@@ -49,7 +50,7 @@ public class DetailsFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_details,container,false);
+        return inflater.inflate(R.layout.fragment_details, container, false);
 
     }
 
@@ -65,7 +66,7 @@ public class DetailsFragment extends BaseFragment {
 
     private void setUpDetails() {
 
-        int titleType = getArguments().getInt("type",0);
+        int titleType = getArguments().getInt("type", 0);
         String token = getToken();
         String url = getArguments().getString("url");
 
@@ -99,13 +100,13 @@ public class DetailsFragment extends BaseFragment {
     }
 
     private void fetchTvShows(String token, String url) {
-        mDetailsViewModel.fetchTvShows(token,url).observe(getViewLifecycleOwner(), new Observer<TvShowsModel>() {
+        mDetailsViewModel.fetchTvShows(token, url).observe(getViewLifecycleOwner(), new Observer<TvShowsModel>() {
             @Override
             public void onChanged(TvShowsModel tvShowsModel) {
                 setTitlesDetails(tvShowsModel.details);
                 setUpSeasonsSpinner(tvShowsModel);
                 setUpQualitySpinner(tvShowsModel, 0);
-                setUpDownloadLinks(tvShowsModel,0,0);
+                setUpDownloadLinks(tvShowsModel, 0, 0);
             }
         });
     }
@@ -124,7 +125,7 @@ public class DetailsFragment extends BaseFragment {
         qualitySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                setUpDownloadLinks(tvShowsModel,seasonSpinner.getSelectedItemPosition(), position);
+                setUpDownloadLinks(tvShowsModel, seasonSpinner.getSelectedItemPosition(), position);
             }
 
             @Override
@@ -139,7 +140,7 @@ public class DetailsFragment extends BaseFragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 setUpQualitySpinner(tvShowsModel, position);
-                setUpDownloadLinks(tvShowsModel,position,0);
+                setUpDownloadLinks(tvShowsModel, position, 0);
             }
 
             @Override
@@ -151,8 +152,8 @@ public class DetailsFragment extends BaseFragment {
 
     private void setUpSeasonsSpinner(TvShowsModel tvShowsModel) {
         List<String> seasonNames = getSeasonNames(tvShowsModel);
-        ArrayAdapter<String> adapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, seasonNames);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapter = new ArrayAdapter(getContext(), R.layout.item_details_selection_spinner, seasonNames);
+        adapter.setDropDownViewResource(R.layout.item_details_selection_spinner);
         seasonSpinner.setAdapter(adapter);
         handleSeasonSelection(tvShowsModel);
     }
@@ -175,16 +176,16 @@ public class DetailsFragment extends BaseFragment {
     }
 
 
-    private void setUpDownloadLinks(TvShowsModel tvShowsModel,int position, int qualityPosition) {
+    private void setUpDownloadLinks(TvShowsModel tvShowsModel, int position, int qualityPosition) {
         linksRecycler.setAdapter(new LinksAdapter(tvShowsModel.mSeasonPack.get(position).seasons.get(qualityPosition).downloadLinks));
-        linksRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        linksRecycler.setLayoutManager(new GridLayoutManager(getContext(), 2));
     }
 
     private void setUpQualitySpinner(TvShowsModel tvShowsModel, int position) {
 
-        List<String> seasonDescriptions = getSeasonQuality(tvShowsModel,position);
-        ArrayAdapter<String> qualityAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, seasonDescriptions);
-        qualityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        List<String> seasonDescriptions = getSeasonQuality(tvShowsModel, position);
+        ArrayAdapter<String> qualityAdapter = new ArrayAdapter(getContext(), R.layout.item_details_selection_spinner, seasonDescriptions);
+        qualityAdapter.setDropDownViewResource(R.layout.item_details_selection_spinner);
         qualitySpinner.setAdapter(qualityAdapter);
         handleQualitySelection(tvShowsModel);
     }
