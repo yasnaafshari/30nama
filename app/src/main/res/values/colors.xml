@@ -4,12 +4,13 @@
     <color name="colorPrimary">@color/red</color>
     <color name="detailsSeasonSelectionBackground">#CC1919</color>
     <color name="mainColor">#0A4F8C</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorAccent">#3399FF</color>
     <color name="notifcation_background_read">#5E6867</color>
     <color name="notifcation_background_not_read">#136A75</color>
     <color name="navigationBar_background">#8EDFED</color>
     <color name="liked">#700E19</color>
     <color name="black">#000</color>
+    <color name="drawerColor">#061625</color>
     <color name="textLightWhite">#F2F2F2</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="episodeDownloadLinkTextColor">#3399FF</color>
