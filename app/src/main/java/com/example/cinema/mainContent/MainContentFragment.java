@@ -82,14 +82,9 @@ public class MainContentFragment extends Fragment {
                     case R.id.categories:
                         replaceCurrentFragment(new CategoriesFragment());
                         break;
-                    case R.id.top250:
-                        replaceCurrentFragment(new CategoriesFragment());
-                        break;
-                    case R.id.logout:
-                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-                        preferences.edit().putString("token", null).commit();
-                        replaceMainFragment(new LoginFragment());
-                        break;
+//                    case R.id.top250:
+//                        replaceCurrentFragment(new CategoriesFragment());
+//                        break;
                     case R.id.news:
                         replaceCurrentFragment(new NewsFragment());
                         break;
@@ -101,6 +96,11 @@ public class MainContentFragment extends Fragment {
                         break;
                     case R.id.favouritesList:
                         replaceCurrentFragment(ProfileListsFragment.newInstance(ProfileListsFragment.FAVOURITES));
+                        break;
+                    case R.id.logout:
+                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                        preferences.edit().putString("token", null).commit();
+                        replaceMainFragment(new LoginFragment());
                         break;
                 }
                 drawerLayout.closeDrawers();
