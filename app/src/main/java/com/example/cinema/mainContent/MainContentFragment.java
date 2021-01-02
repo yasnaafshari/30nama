@@ -20,6 +20,7 @@ import com.example.cinema.R;
 import com.example.cinema.categories.CategoriesFragment;
 import com.example.cinema.homePage.HomeFragment;
 import com.example.cinema.login.LoginFragment;
+import com.example.cinema.news.NewsFragment;
 import com.example.cinema.notificationList.NotificationFragment;
 import com.example.cinema.profile.ProfileFragment;
 import com.example.cinema.search.SearchFragment;
@@ -88,6 +89,9 @@ public class MainContentFragment extends Fragment {
                         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
                         preferences.edit().putString("token", null).commit();
                         replaceMainFragment(new LoginFragment());
+                    case R.id.news:
+                        replaceCurrentFragment(new NewsFragment());
+
 
                 }
                 return false;
