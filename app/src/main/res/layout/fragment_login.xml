@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context=".login.LoginFragment">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/navigationBar_background"
         android:text="Email"
         android:textSize="32sp"
         app:layout_constraintBottom_toTopOf="@+id/editTextEmail"
@@ -19,8 +21,12 @@
     <EditText
         android:id="@+id/editTextEmail"
         android:hint="Email"
+        android:textColor="@color/episodeDownloadLinkTextColor"
+        android:background="@color/white"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_height="40dp"
         android:layout_marginTop="150dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,6 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Password"
+        android:textColor="@color/navigationBar_background"
         android:textSize="32sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,18 +45,22 @@
 
     <EditText
         android:id="@+id/editTextPass"
+        android:layout_margin="16dp"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:hint="Password"
+        android:textColor="@color/episodeDownloadLinkTextColor"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="250dp"
+        android:layout_width="180dp"
         android:scaleType="fitXY"
-        android:layout_height="70dp"
+        android:layout_margin="16dp"
+        android:layout_height="50dp"
         android:src="@drawable/ic_launcher_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -57,33 +68,36 @@
 
     <Button
         android:id="@+id/retry"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@color/white"
         android:text="retry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        app:layout_constraintEnd_toStartOf="@+id/imageView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPass" />
+        android:layout_margin="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/captcha"
+        app:layout_constraintEnd_toStartOf="@+id/captcha"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/captcha"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_margin="16dp"
+        android:background="@color/white"
         android:hint="Enter the Number"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:textColor="@color/episodeDownloadLinkTextColor"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sign in"
+        android:text="Login"
+        android:shadowRadius="20dp"
+        android:background="@color/red"
+        android:layout_marginTop="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/captcha"
         android:id="@+id/signInButton"/>
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
